@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Property Agent — Antigravity Master Build Specification
 
-## Getting Started
+> **AI-first real estate discovery, qualification, and transaction platform.**  
+> Initial Launch Market: **India (Kolkata & surrounding micro-markets)**  
+> Primary Business Model: **Qualified leads + successful transaction commission**  
+> Build Target: **Production-ready full-stack web application**
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📑 Master Documentation Index
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All core architectural, engineering, design, and product specifications are documented under `/docs`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. [01 — PRD (Product Requirements Document)](file:///Users/tatz/AI%20Property%20Search/docs/01-PRD.md)
+2. [02 — Architecture](file:///Users/tatz/AI%20Property%20Search/docs/02-ARCHITECTURE.md)
+3. [03 — Design System & UI Specifications](file:///Users/tatz/AI%20Property%20Search/docs/03-DESIGN.md)
+4. [04 — Tech Stack & Environment Configuration](file:///Users/tatz/AI%20Property%20Search/docs/04-TECH-STACK.md)
+5. [05 — Database Schema & Data Modeling](file:///Users/tatz/AI%20Property%20Search/docs/05-DATABASE.md)
+6. [06 — API Specification](file:///Users/tatz/AI%20Property%20Search/docs/06-API.md)
+7. [07 — Features & Capabilities Matrix](file:///Users/tatz/AI%20Property%20Search/docs/07-FEATURES.md)
+8. [08 — Core User Flows](file:///Users/tatz/AI%20Property%20Search/docs/08-USER-FLOWS.md)
+9. [09 — SEO & Public Growth Engine](file:///Users/tatz/AI%20Property%20Search/docs/09-SEO.md)
+10. [10 — Security & Trust Guidelines](file:///Users/tatz/AI%20Property%20Search/docs/10-SECURITY.md)
+11. [11 — Engineering & Business Rules](file:///Users/tatz/AI%20Property%20Search/docs/11-RULES.md)
+12. [12 — Phased Implementation Plan (Phases 0 to 11)](file:///Users/tatz/AI%20Property%20Search/docs/12-PHASES.md)
+13. [13 — Testing Strategy & Quality Assurance](file:///Users/tatz/AI%20Property%20Search/docs/13-TESTING.md)
+14. [14 — Deployment, CI/CD & Observability](file:///Users/tatz/AI%20Property%20Search/docs/14-DEPLOYMENT.md)
+15. [15 — Changelog & Specification Governance](file:///Users/tatz/AI%20Property%20Search/docs/15-CHANGELOG.md)
+16. [Master Build Checklist](file:///Users/tatz/AI%20Property%20Search/docs/MASTER_BUILD_CHECKLIST.md)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎯 Master Build Directive
+Build this document as the source of truth. Do not implement only the landing page or UI prototype. Every phase must conclude with the corresponding **frontend, backend, database, API, authentication, authorization, validation, AI logic, admin controls, customer experience, agent experience, testing, and deployment** work for that phase.
