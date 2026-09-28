@@ -15,6 +15,25 @@ function CompareContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const loadDemoComparison = async (ids: string[]) => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/compare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ propertyIds: ids }),
+      });
+      const data = await res.json();
+      if (res.ok && data.comparison) {
+        setComparison(data.comparison);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     async function loadComparison() {
       if (!idsParam) {
@@ -52,25 +71,6 @@ function CompareContent() {
 
     loadComparison();
   }, [idsParam]);
-
-  const loadDemoComparison = async (ids: string[]) => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/compare", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ propertyIds: ids }),
-      });
-      const data = await res.json();
-      if (res.ok && data.comparison) {
-        setComparison(data.comparison);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (

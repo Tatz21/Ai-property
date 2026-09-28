@@ -74,11 +74,11 @@ export function TestimonialsCard({ testimonials, className }: TestimonialsCardPr
           >
             {current.highlight && (
               <span className="inline-block text-xs font-mono font-medium text-cyan-400 mb-2">
-                // {current.highlight}
+                {`// ${current.highlight}`}
               </span>
             )}
             <p className="text-zinc-200 text-base sm:text-lg leading-relaxed mb-6 font-normal">
-              "{current.content}"
+              &ldquo;{current.content}&rdquo;
             </p>
 
             <div className="flex items-center justify-between pt-4 border-t border-zinc-800/80">
