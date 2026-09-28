@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Check, X, Eye, MapPin, AlertCircle, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Check, X, Eye, MapPin, AlertCircle, CheckCircle2, Trash2 } from "lucide-react";
 import { formatINR } from "@/lib/utils";
 import { PropertyRecord } from "@/lib/properties/types";
 
@@ -29,6 +29,20 @@ export default function AdminPropertiesModerationPage() {
   useEffect(() => {
     fetchProperties();
   }, []);
+
+  const handleDelete = async (id: string, title: string) => {
+    if (!confirm(`Delete listing "${title}"? This will remove it from all public search & AI indices.`)) return;
+    try {
+      const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setProperties(prev => prev.filter(p => p.id !== id));
+        setFeedback(`Listing "${title}" permanently deleted.`);
+        setTimeout(() => setFeedback(null), 3000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleModerate = async (id: string, status: "verified" | "rejected") => {
     try {
@@ -156,6 +170,14 @@ export default function AdminPropertiesModerationPage() {
                           <span>Reject</span>
                         </button>
                       )}
+
+                      <button
+                        onClick={() => handleDelete(p.id, p.title)}
+                        className="p-1.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-950/30 transition-colors cursor-pointer"
+                        title="Delete Listing"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </td>
                 </tr>

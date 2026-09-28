@@ -6,7 +6,7 @@ import { SpotlightNavbar } from "@/components/ui/spotlight-navbar";
 import { PerspectiveGrid } from "@/components/ui/perspective-grid";
 import { 
   Home, Plus, Eye, CalendarCheck, ShieldCheck, 
-  MapPin, CheckCircle2, ArrowRight, DollarSign
+  MapPin, CheckCircle2, ArrowRight, DollarSign, Trash2
 } from "lucide-react";
 import { formatINR } from "@/lib/utils";
 import { PropertyRecord } from "@/lib/properties/types";
@@ -16,25 +16,41 @@ export default function OwnerDashboardPage() {
   const [properties, setProperties] = useState<PropertyRecord[]>([]);
   const [visits, setVisits] = useState<VisitRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const loadOwnerData = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/owner/properties");
+      const data = await res.json();
+      if (res.ok) {
+        setProperties(data.properties || []);
+        setVisits(data.visits || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function loadOwnerData() {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/owner/properties");
-        const data = await res.json();
-        if (res.ok) {
-          setProperties(data.properties || []);
-          setVisits(data.visits || []);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
     loadOwnerData();
   }, []);
+
+  const handleDeleteProperty = async (id: string, title: string) => {
+    if (!confirm(`Delete listing "${title}"? This will delist it from the marketplace.`)) return;
+    try {
+      const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setProperties(prev => prev.filter(p => p.id !== id));
+        setFeedback(`Property "${title}" deleted.`);
+        setTimeout(() => setFeedback(null), 3000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-[#09090b] text-zinc-100 flex flex-col justify-between">
@@ -84,6 +100,13 @@ export default function OwnerDashboardPage() {
           </div>
         </div>
 
+        {feedback && (
+          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>{feedback}</span>
+          </div>
+        )}
+
         {/* Properties List */}
         <div className="rounded-[24px] bg-[#111116] border border-zinc-800 p-6 shadow-2xl space-y-4">
           <h2 className="text-base font-bold text-white mb-2">Your Active Listings</h2>
@@ -117,6 +140,13 @@ export default function OwnerDashboardPage() {
                     >
                       View Live Page
                     </Link>
+                    <button
+                      onClick={() => handleDeleteProperty(p.id, p.title)}
+                      className="p-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+                      title="Delete Listing"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               ))}

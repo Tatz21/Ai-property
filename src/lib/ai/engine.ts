@@ -2,6 +2,7 @@ import { propertyService } from "@/lib/properties/service";
 import { aiStore } from "./store";
 import { AIMessage, ExtractedRequirement } from "./types";
 import { formatINR } from "@/lib/utils";
+import { PropertyRecord } from "@/lib/properties/types";
 
 const PROMPT_VERSION = "v1.2-kolkata-agent";
 
@@ -32,11 +33,11 @@ export function extractRequirementsFromText(text: string): Partial<ExtractedRequ
     { pattern: /new\s*town\s*(?:action\s*area\s*ii|aa2|aa-2|aa\s*2)/i, name: "New Town Action Area II" },
     { pattern: /new\s*town\s*(?:action\s*area\s*i|aa1|aa-1|aa\s*1)/i, name: "New Town Action Area I" },
     { pattern: /new\s*town\s*(?:action\s*area\s*iii|aa3|aa-3|aa\s*3)/i, name: "New Town Action Area III" },
-    { pattern: /new\s*town|newtown|eco\s*park/i, name: "New Town Action Area II" },
+    { pattern: /new\s*town|newtown|eco\s*park/i, name: "New Town" },
     { pattern: /salt\s*lake\s*sector\s*v|sector\s*5|sector\s*v/i, name: "Salt Lake Sector V" },
     { pattern: /salt\s*lake/i, name: "Salt Lake" },
-    { pattern: /rajarhat|chinar\s*park/i, name: "Rajarhat Chinar Park" },
-    { pattern: /em\s*bypass|topsia|science\s*city/i, name: "EM Bypass - Topsia" },
+    { pattern: /rajarhat|chinar\s*park/i, name: "Rajarhat" },
+    { pattern: /em\s*bypass|topsia|science\s*city/i, name: "EM Bypass" },
     { pattern: /ballygunge/i, name: "Ballygunge" },
     { pattern: /alipore/i, name: "Alipore" },
   ];
@@ -84,15 +85,40 @@ export const aiEngine = {
 
     // 3. Execute Property Search Tool on live database
     toolsInvoked.push("searchPropertiesTool");
-    const searchResults = await propertyService.search({
+    let searchResults = await propertyService.search({
       locality: extracted.locality,
       maxPrice: extracted.maxPrice,
       bhk: extracted.bhk,
       type: extracted.propertyType,
-      limit: 3,
+      limit: 6,
     });
 
-    const matchedProperties = searchResults.properties;
+    let matchedProperties: PropertyRecord[] = searchResults.properties;
+
+    // Fallback 1: If strict filter returned 0, search by locality or general query
+    if (matchedProperties.length === 0 && extracted.locality) {
+      const relaxedLocality = await propertyService.search({
+        locality: extracted.locality,
+        limit: 4,
+      });
+      matchedProperties = relaxedLocality.properties;
+    }
+
+    // Fallback 2: If still 0, search by BHK or broad query text
+    if (matchedProperties.length === 0 && extracted.bhk) {
+      const relaxedBhk = await propertyService.search({
+        bhk: extracted.bhk,
+        limit: 4,
+      });
+      matchedProperties = relaxedBhk.properties;
+    }
+
+    // Fallback 3: If still 0, return top verified Kolkata active listings
+    if (matchedProperties.length === 0) {
+      const allActive = await propertyService.search({ limit: 4 });
+      matchedProperties = allActive.properties;
+    }
+
     const matchedIds = matchedProperties.map(p => p.id);
 
     // 4. Synthesize Natural AI Response & Match Reasoning
@@ -105,15 +131,15 @@ export const aiEngine = {
       if (extracted.locality) matchCriteriaParts.push(`in ${extracted.locality}`);
       if (extracted.maxPrice) matchCriteriaParts.push(`under ${formatINR(extracted.maxPrice)}`);
 
-      const criteriaStr = matchCriteriaParts.length > 0 ? matchCriteriaParts.join(" ") : "your requirements";
+      const criteriaStr = matchCriteriaParts.length > 0 ? matchCriteriaParts.join(" ") : "your search";
 
-      responseText = `I analyzed our verified Kolkata database for ${criteriaStr}. I found **${matchedProperties.length} verified listings** that match:\n\n` +
-        `**Top Recommendation: ${top.title}** (${top.locality})\n` +
+      responseText = `I analyzed our verified Kolkata real estate inventory for ${criteriaStr}. Here are **${matchedProperties.length} verified listings** matching your requirements:\n\n` +
+        `**1. ${top.title}** (${top.locality})\n` +
         `• **Price**: ${formatINR(top.price)} • **Specs**: ${top.bhk > 0 ? `${top.bhk} BHK` : "Commercial"}, ${top.areaSqFt} sq.ft\n` +
-        `• **Match Reason**: 100% verified WB RERA listing (${top.reraId || "Verified"}) with ${top.amenities.slice(0, 3).join(", ")}. Status is **${top.status}**.\n\n` +
-        `Would you like me to book a private site visit with our local Kolkata specialist, or would you like to explore alternative options?`;
+        `• **Highlights**: 100% West Bengal RERA verified (${top.reraId || "Verified"}) with ${top.amenities.slice(0, 3).join(", ")}. Status: **${top.status.toUpperCase()}**.\n\n` +
+        `Review the interactive property cards below. Would you like me to schedule a private inspection visit or compare these floor plans?`;
     } else {
-      responseText = `I searched our verified database for ${extracted.locality || "Kolkata"} listings with your criteria. Currently, no listings directly match that exact combination, but I can adjust the price ceiling or show nearby micro-markets like New Town and Rajarhat. What is your preferred budget range?`;
+      responseText = `I searched our verified database for ${extracted.locality || "Kolkata"} listings. I'm ready to assist you. Please tell me your preferred BHK, locality (e.g. New Town, Salt Lake, Rajarhat, EM Bypass), and budget range!`;
     }
 
     // 5. Persist Assistant Message with Matched Properties

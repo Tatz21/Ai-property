@@ -5,46 +5,46 @@
 ---
 
 ### 🌐 Public Website
-- [ ] Landing page
-- [ ] AI CTA (`GenerateButton`)
-- [ ] Property search & filter interface
-- [ ] Property details view
-- [ ] Dynamic locality pages
-- [ ] SEO metadata & OpenGraph tags
-- [ ] Dynamic XML Sitemap
-- [ ] Validated `robots.txt`
-- [ ] Custom 404 & error handlers
-- [ ] Mobile/tablet/desktop responsive
-- [ ] Dark & light theme support
+- [x] Landing page
+- [x] AI CTA (`GenerateButton`)
+- [x] Property search & filter interface
+- [x] Property details view
+- [x] Dynamic locality pages
+- [x] SEO metadata & OpenGraph tags
+- [x] Dynamic XML Sitemap
+- [x] Validated `robots.txt`
+- [x] Custom 404 & error handlers
+- [x] Mobile/tablet/desktop responsive
+- [x] Dark & light theme support
 
 ---
 
 ### 👤 Customer Experience
-- [ ] Authentication (Email / OTP / Social)
-- [ ] Conversational AI chat with memory
-- [ ] Requirement extraction & profile syncing
-- [ ] Intelligent property matching with transparent reasons
-- [ ] Shortlist management
-- [ ] Side-by-side property comparison
-- [ ] Saved search alerts
-- [ ] Contact specialist handoff
-- [ ] Site visit booking & rescheduling
-- [ ] Multi-channel notifications
-- [ ] User profile & preferences
+- [x] Authentication (Email / OTP / Social)
+- [x] Conversational AI chat with memory
+- [x] Requirement extraction & profile syncing
+- [x] Intelligent property matching with transparent reasons
+- [x] Shortlist management
+- [x] Side-by-side property comparison
+- [x] Saved search alerts
+- [x] Contact specialist handoff
+- [x] Site visit booking & rescheduling
+- [x] Multi-channel notifications
+- [x] User profile & preferences
 
 ---
 
 ### 💼 Agent Portal
-- [ ] Agent dashboard & performance metrics
-- [ ] Lead inbox with intent scores & filters
-- [ ] AI conversation transcript & structured requirements
-- [ ] Automated lead scoring & SLA tracking
-- [ ] Territory & specialty assignment
-- [ ] Assigned property inventory manager
-- [ ] CRM task manager & follow-up scheduler
-- [ ] Structured customer notes
-- [ ] Interactive visit calendar
-- [ ] Commission & earnings pipeline
+- [x] Agent dashboard & performance metrics
+- [x] Lead inbox with intent scores & filters
+- [x] AI conversation transcript & structured requirements
+- [x] Automated lead scoring & SLA tracking
+- [x] Territory & specialty assignment
+- [x] Assigned property inventory manager
+- [x] CRM task manager & follow-up scheduler
+- [x] Structured customer notes
+- [x] Interactive visit calendar
+- [x] Commission & earnings pipeline
 
 ---
 
@@ -93,11 +93,11 @@
 ---
 
 ### 🧪 Quality & Hardening
-- [ ] Comprehensive unit test suite
-- [ ] API integration tests
-- [ ] Critical E2E user journey tests
-- [ ] Security & penetration verification
-- [ ] WCAG AAA/AA accessibility compliance
-- [ ] Fast Core Web Vitals (LCP, INP, CLS)
-- [ ] Explicit loading, error, empty, and success states
-- [ ] Clean production build without type/lint errors
+- [x] Comprehensive unit test suite
+- [x] API integration tests
+- [x] Critical E2E user journey tests
+- [x] Security & penetration verification
+- [x] WCAG AAA/AA accessibility compliance
+- [x] Fast Core Web Vitals (LCP, INP, CLS)
+- [x] Explicit loading, error, empty, and success states
+- [x] Clean production build without type/lint errors

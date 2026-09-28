@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { Shield, Users, Building2, UserCheck, Bot, Settings, FileText, ArrowLeft, Sliders, Briefcase, CalendarCheck, DollarSign, Globe } from "lucide-react";
+import { Shield, Users, Building2, UserCheck, Bot, Settings, FileText, ArrowLeft, Sliders, Briefcase, CalendarCheck, DollarSign, Globe, Lock, Rocket } from "lucide-react";
+import { AdminHeader } from "@/components/admin/admin-header";
 
 export default function AdminLayout({
   children,
@@ -18,7 +19,7 @@ export default function AdminLayout({
             </div>
             <div>
               <h2 className="font-bold text-sm tracking-tight text-white">Admin Console</h2>
-              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider">Phase 0 Shell</span>
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider">Superadmin & RBAC</span>
             </div>
           </div>
 
@@ -108,6 +109,22 @@ export default function AdminLayout({
             </Link>
 
             <Link
+              href="/admin/security"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/40 transition-colors"
+            >
+              <Lock className="w-4 h-4 text-emerald-400" />
+              <span>Security & Hardening</span>
+            </Link>
+
+            <Link
+              href="/admin/launch"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-cyan-400 bg-cyan-950/20 border border-cyan-500/30 transition-colors"
+            >
+              <Rocket className="w-4 h-4 text-cyan-400" />
+              <span>Launch & Production Center</span>
+            </Link>
+
+            <Link
               href="/admin#audit-logs"
               className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/40 transition-colors"
             >
@@ -125,7 +142,7 @@ export default function AdminLayout({
           </nav>
         </div>
 
-        <div className="pt-6 border-t border-zinc-800/80">
+        <div className="pt-6 border-t border-zinc-800/80 space-y-3">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs font-medium text-zinc-400 hover:text-cyan-300 transition-colors"
@@ -136,10 +153,13 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
-        {children}
-      </main>
+      {/* Main Content Area with sticky Admin Header */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <AdminHeader />
+        <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
